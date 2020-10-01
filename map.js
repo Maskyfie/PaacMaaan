@@ -23,7 +23,7 @@ function drawMap(tile) {
     canvas.ctx.arc(px * tileSize + tileSize / 2, py * tileSize + tileSize / 2, 5, 0, 360);
     canvas.ctx.fill();
   }
-}
+} //TEST
 
 map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],

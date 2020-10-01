@@ -21,7 +21,7 @@ class Enemy {
     this.py += 0.1 * this.direction.y;
 
     var tileSiMovementX;
-    var tileSiMovementY;
+    var tileSiMovementY; //TEST
 
     if (this.direction.x > 0) tileSiMovementX = map[Math.floor(sauvegardeY)][Math.floor(this.px + 0.9)];
     else tileSiMovementX = map[Math.floor(sauvegardeY)][Math.floor(this.px)];

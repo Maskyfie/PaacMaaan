@@ -13,7 +13,7 @@ $(document).ready(function () {
   canvas.ctx = canvas.element.getContext("2d");
   player = new Player(9, 11);
   enemies = [];
-  enemies.push(new Enemy(9, 9, "pink")); //,new Enemy(8,9,"blue"), new Enemy(10,9,"orange"), new Enemy(9,7,"red"))
+  enemies.push(new Enemy(9, 9, "pink", new Enemy(8, 9, "blue"), new Enemy(10, 9, "orange"), new Enemy(9, 7, "red")));
 
   update();
 });

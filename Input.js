@@ -39,7 +39,7 @@ var Input = {
 
     if (this.derniereTouche == "s") {
       var tileSiMovementY = map[Math.floor(player.py + 0.9)][Math.floor(sauvegardeX)];
-    }
+    } //TEST
 
     if (tileSiMovementY == 1) {
       player.py = sauvegardeY;

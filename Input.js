@@ -22,11 +22,21 @@ var Input = {
     let sauvegardeX = player.px;
     let sauvegardeY = player.py;
 
-    if (this.derniereTouche == "z") player.py -= 0.1;
-    if (this.derniereTouche == "q") player.px -= 0.1;
-    if (this.derniereTouche == "s") player.py += 0.1;
+    if (this.derniereTouche == "z") {
+			player.py -= 0.1;
+			player.direction = {x: 0, y: -1}
+		}
+    if (this.derniereTouche == "q") {
+			player.px -= 0.1;
+			player.direction = {x: -1, y: 0}
+		}
+    if (this.derniereTouche == "s") {
+			player.py += 0.1;
+			player.direction = {x: 0, y: 1}
+		}
     if (this.derniereTouche == "d") {
       player.px += 0.1;
+			player.direction = {x: 1, y: 0}
     }
 
     var tileSiMovementX = map[Math.floor(sauvegardeY)][Math.floor(player.px)];
@@ -48,9 +58,6 @@ var Input = {
     if (tileSiMovementX == 1) {
       player.px = sauvegardeX;
     }
-
-    if (player.px < 0) player.px = map.length;
-    if (player.px > map.length) player.px = 0;
   },
 };
 

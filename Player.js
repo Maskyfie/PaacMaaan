@@ -3,23 +3,31 @@ class Player {
     this.px = px;
     this.py = py;
     this.direction = {};
+    this.currentTimeoutID = 0;
   }
   draw() {
-    canvas.ctx.fillStyle = "yellow";
-    if (canvas.pacGumActive) canvas.ctx.fillStyle = "red";
+    game.ctx.fillStyle = "yellow";
+    if (game.pacGumActive) game.ctx.fillStyle = "red";
 
-    canvas.ctx.fillRect(this.px * tileSize, this.py * tileSize, tileSize, tileSize);
+    game.ctx.fillRect(this.px * tileSize, this.py * tileSize, tileSize, tileSize);
   }
   update() {
-    if (map[Math.floor(this.py)][Math.floor(this.px)] == 0) {
-      canvas.score++;
+    let currentTile = map[Math.floor(this.py)][Math.floor(this.px)];
+
+    // gum standard
+    if (currentTile == 0) {
+      game.score++;
       map[Math.floor(this.py)][Math.floor(this.px)] = 5;
     }
-    if (map[Math.floor(this.py)][Math.floor(this.px)] == 2) {
-      canvas.pacGumActive = true;
-      for (let i = 0; i < enemies.length; i++) enemies[i].pacGum();
-      setTimeout(function () {
-        canvas.pacGumActive = false;
+
+    // pacGum
+    if (currentTile == 2) {
+      game.pacGumActive = true;
+
+      // on reset timeout si jamais un déjà en cours
+      clearTimeout(this.currentTimeoutID);
+      this.currentTimeoutID = setTimeout(function () {
+        game.pacGumActive = false;
       }, 5000);
       map[Math.floor(this.py)][Math.floor(this.px)] = 5;
     }

@@ -1,31 +1,30 @@
-var canvas = {
-  trap: 4,
+var game = {
   pacGumActive: false,
   width: 570,
   height: 630,
   perdu: false,
   score: 0,
   gateOpen: false,
+  gateTimeoutID: 0,
 };
-const tileSize = canvas.height / map.length;
+const tileSize = game.height / map.length;
 
 $(document).ready(function () {
-  canvas.element = document.getElementById("myCanvas");
-  canvas.ctx = canvas.element.getContext("2d");
-  var engine;
-  game();
+  game.element = document.getElementById("myCanvas");
+  game.ctx = game.element.getContext("2d");
+  initGame();
 });
 
-function game() {
+function initGame() {
   player = new Player(9, 11);
   enemies = [];
   enemies.push(new Enemy(9, 9, "pink"), new Enemy(8, 9, "blue"), new Enemy(10, 9, "orange"), new Enemy(9, 7, "red"));
   update(map);
-  setTimeout(openGate, 1000);
+  game.gateTimeoutID = setTimeout(openGate, 1000);
 }
 
 function update() {
-  canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+  game.ctx.clearRect(0, 0, game.width, game.height);
   mapUpdate(map);
   player.draw();
   Input.update();
@@ -41,12 +40,12 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 function openGate() {
-  canvas.gateOpen = true;
-  if (canvas.gateOpen) {
+  game.gateOpen = true;
+  if (game.gateOpen) {
     map[9][11] = 5;
     map[10][9] = 5;
     map[8][9] = 5;
     map[9][7] = 5;
   }
-  canvas.gateOpen = false;
+  game.gateOpen = false;
 }

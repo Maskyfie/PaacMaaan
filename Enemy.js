@@ -14,20 +14,26 @@ class Enemy {
     this.speed = 0.1;
   }
   draw() {
-    canvas.ctx.beginPath();
-    if (canvas.pacGumActive) {
-      canvas.ctx.fillStyle = this.pacGommedColor;
+    game.ctx.beginPath();
+    if (game.pacGumActive) {
+      game.ctx.fillStyle = this.pacGommedColor;
     } else {
-      canvas.ctx.fillStyle = this.color;
+      game.ctx.fillStyle = this.color;
     }
-    canvas.ctx.arc(this.px * tileSize + tileSize / 2, this.py * tileSize + tileSize / 2, tileSize / 2, 0, 360);
-    canvas.ctx.fill();
+    game.ctx.arc(this.px * tileSize + tileSize / 2, this.py * tileSize + tileSize / 2, tileSize / 2, 0, 360);
+    game.ctx.fill();
   }
   update() {
     let sauvegardeX = this.px;
     let sauvegardeY = this.py;
 
     let offset = 0.9;
+
+    if (game.pacGumActive == false) {
+      this.speed = 0.1;
+    } else {
+      this.speed = 0.05;
+    }
 
     this.px = this.px + this.speed * this.direction.x;
     this.py = this.py + this.speed * this.direction.y;
@@ -131,7 +137,7 @@ class Enemy {
       if (map[py][px + 1] != 1) possDeDepl.push({ x: 1, y: 0 });
     }
 
-    if (canvas.pacGumActive) {
+    if (game.pacGumActive) {
       if (player.px > this.px) {
         if (map[py][px - 1] != 1) possDeDepl.push({ x: -1, y: 0 });
       }
@@ -148,6 +154,7 @@ class Enemy {
         if (map[py][px + 1] != 1) possDeDepl.push({ x: 1, y: 0 });
       }
     }
+
     if (possDeDepl.length == 0 && this.goingLeft) {
       if (map[py][px + 1] != 1) possDeDepl.push({ x: 1, y: 0 });
     }
@@ -162,40 +169,13 @@ class Enemy {
     }
     if (possDeDepl.length > 0) return possDeDepl[getRandomInt(possDeDepl.length)];
   }
-  pacGum() {
-    if (canvas.pacGumActive == false) {
-      this.speed = 0.1;
-      return;
-    }
-    let px = Math.floor(this.px);
-    let py = Math.floor(this.py);
-    let possDeDepl = [];
 
-    if (player.px > this.px) {
-      if (map[py][px - 1] != 1) possDeDepl.push({ x: -1, y: 0 });
-    }
-
-    if (player.py > this.py) {
-      if (map[py - 1][px] != 1) possDeDepl.push({ x: 0, y: -1 });
-    }
-
-    if (player.py < this.py) {
-      if (map[py + 1][px] != 1) possDeDepl.push({ x: 0, y: 1 });
-    }
-
-    if (player.px < this.px) {
-      if (map[py][px + 1] != 1) possDeDepl.push({ x: 1, y: 0 });
-    }
-
-    this.direction.x = this.direction.x * -1;
-    this.direction.y = this.direction.y * -1;
-    this.speed = 0.05;
-  }
   killPacMan() {
-    if (Math.floor(this.px) == Math.floor(player.px) && Math.floor(this.py) == Math.floor(player.py) && !canvas.pacGumActive) {
-      this.speed = 0.1;
+    if (Math.floor(this.px) == Math.floor(player.px) && Math.floor(this.py) == Math.floor(player.py) && !game.pacGumActive) {
       map = newMap();
-      game();
+      clearTimeout(game.gateTimeoutID);
+
+      initGame();
       cancelAnimationFrame(engine);
     }
   }

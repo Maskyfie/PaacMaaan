@@ -8,20 +8,20 @@ function mapUpdate(map) {
 
 function drawMap(tile) {
   if (tile == 1) {
-    canvas.ctx.fillStyle = "blue";
-    canvas.ctx.fillRect(px * tileSize, py * tileSize, tileSize, tileSize);
+    game.ctx.fillStyle = "blue";
+    game.ctx.fillRect(px * tileSize, py * tileSize, tileSize, tileSize);
   }
   if (tile == 0) {
-    canvas.ctx.beginPath();
-    canvas.ctx.fillStyle = "white";
-    canvas.ctx.arc(px * tileSize + tileSize / 2, py * tileSize + tileSize / 2, 2, 0, 360);
-    canvas.ctx.fill();
+    game.ctx.beginPath();
+    game.ctx.fillStyle = "white";
+    game.ctx.arc(px * tileSize + tileSize / 2, py * tileSize + tileSize / 2, 2, 0, 360);
+    game.ctx.fill();
   }
   if (tile == 2) {
-    canvas.ctx.beginPath();
-    canvas.ctx.fillStyle = "white";
-    canvas.ctx.arc(px * tileSize + tileSize / 2, py * tileSize + tileSize / 2, 5, 0, 360);
-    canvas.ctx.fill();
+    game.ctx.beginPath();
+    game.ctx.fillStyle = "white";
+    game.ctx.arc(px * tileSize + tileSize / 2, py * tileSize + tileSize / 2, 5, 0, 360);
+    game.ctx.fill();
   }
 }
 function pointLeft() {}

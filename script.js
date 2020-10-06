@@ -5,25 +5,23 @@ var canvas = {
   height: 630,
   perdu: false,
   score: 0,
-	savedMap: [],
+  gateOpen: false,
 };
 const tileSize = canvas.height / map.length;
 
 $(document).ready(function () {
   canvas.element = document.getElementById("myCanvas");
   canvas.ctx = canvas.element.getContext("2d");
+  var engine;
   game();
-	canvas.savedMap = map
 });
 
 function game() {
-	if (canvas.savedMap.length > 0) map = canvas.savedMap;
-	player = new Player(9, 11);
+  player = new Player(9, 11);
   enemies = [];
-  enemies.push(new Enemy(9, 9, "pink"),new Enemy(8, 9, "blue"), new Enemy(10, 9, "orange"), new Enemy(9, 7, "red")); 
-	update();
-	setTimeout(openGate, 1000)
-
+  enemies.push(new Enemy(9, 9, "pink"), new Enemy(8, 9, "blue"), new Enemy(10, 9, "orange"), new Enemy(9, 7, "red"));
+  update(map);
+  setTimeout(openGate, 1000);
 }
 
 function update() {
@@ -36,17 +34,19 @@ function update() {
     enemies[i].draw();
     enemies[i].update();
   }
-  requestAnimationFrame(update);
+  engine = requestAnimationFrame(update);
 }
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
-function openGate () {
-	map[9][11] = 5
-	map[10][9] = 5
-	map[8][9] = 5
-	map[9][7] = 5
-
-	console.log("change")
-} 
+function openGate() {
+  canvas.gateOpen = true;
+  if (canvas.gateOpen) {
+    map[9][11] = 5;
+    map[10][9] = 5;
+    map[8][9] = 5;
+    map[9][7] = 5;
+  }
+  canvas.gateOpen = false;
+}

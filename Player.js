@@ -2,7 +2,7 @@ class Player {
   constructor(px, py) {
     this.px = px;
     this.py = py;
-		this.direction = {}
+    this.direction = {};
   }
   draw() {
     canvas.ctx.fillStyle = "yellow";
@@ -17,8 +17,10 @@ class Player {
     }
     if (map[Math.floor(this.py)][Math.floor(this.px)] == 2) {
       canvas.pacGumActive = true;
-			for (let i = 0; i < enemies.length; i++) enemies[i].pacGum()
-			setTimeout(function() {canvas.pacGumActive = false}, 5000)
+      for (let i = 0; i < enemies.length; i++) enemies[i].pacGum();
+      setTimeout(function () {
+        canvas.pacGumActive = false;
+      }, 5000);
       map[Math.floor(this.py)][Math.floor(this.px)] = 5;
     }
 

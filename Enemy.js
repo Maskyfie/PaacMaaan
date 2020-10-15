@@ -12,31 +12,27 @@ class Enemy {
     this.newTile = true;
     this.nextTile = {};
     this.speed = 0.1;
+		this.speedPacGum = 0.05;
   }
   draw() {
-    game.ctx.beginPath();
-    if (game.pacGumActive) {
-      game.ctx.fillStyle = this.pacGommedColor;
+    canvas.ctx.beginPath();
+    if (canvas.pacGumActive) {
+      canvas.ctx.fillStyle = this.pacGommedColor;
     } else {
-      game.ctx.fillStyle = this.color;
+      canvas.ctx.fillStyle = this.color;
     }
-    game.ctx.arc(this.px * tileSize + tileSize / 2, this.py * tileSize + tileSize / 2, tileSize / 2, 0, 360);
-    game.ctx.fill();
+    canvas.ctx.arc(this.px * tileSize + tileSize / 2, this.py * tileSize + tileSize / 2, tileSize / 2, 0, 360);
+    canvas.ctx.fill();
   }
   update() {
     let sauvegardeX = this.px;
     let sauvegardeY = this.py;
+		let speed = this.speed
+    let offset = 1 - this.speed;
+		if (canvas.pacGumActive) speed = this.speedPacGum;
 
-    let offset = 0.9;
-
-    if (game.pacGumActive == false) {
-      this.speed = 0.1;
-    } else {
-      this.speed = 0.05;
-    }
-
-    this.px = this.px + this.speed * this.direction.x;
-    this.py = this.py + this.speed * this.direction.y;
+    this.px = this.px + speed * this.direction.x;
+    this.py = this.py + speed * this.direction.y;
 
     var tileSiMovementX;
     var tileSiMovementY; //TEST
@@ -71,10 +67,10 @@ class Enemy {
       offset = offset * 0;
     }
 
-    if (this.direction.x > 0) tileSiMovementX = map[Math.floor(sauvegardeY)][Math.floor(this.px + 0.9)];
+    if (this.direction.x > 0) tileSiMovementX = map[Math.floor(sauvegardeY)][Math.floor(this.px + offset)];
     else tileSiMovementX = map[Math.floor(sauvegardeY)][Math.floor(this.px)];
 
-    if (this.direction.y > 0) tileSiMovementY = map[Math.floor(this.py + 0.9)][Math.floor(sauvegardeX)];
+    if (this.direction.y > 0) tileSiMovementY = map[Math.floor(this.py + offset)][Math.floor(sauvegardeX)];
     else tileSiMovementY = map[Math.floor(this.py)][Math.floor(sauvegardeX)];
 
     if (this.newTile) {
@@ -113,6 +109,18 @@ class Enemy {
       this.py = 9;
       this.newTile = true;
     }
+		if (canvas.gameWon) {
+			this.speed = this.speed * 1.2;
+		}
+	   if (Math.floor(this.px) == Math.floor(player.px) && Math.floor(this.py) == Math.floor(player.py) && canvas.pacGumActive) {
+			 canvas.score = canvas.score + 100
+			 closeGate(); 
+			 this.px = 9; 
+			 this.py = 9;
+  		 clearTimeout(canvas.gateTimeoutID)
+			 canvas.gateTimeoutID = setTimeout(openGate, 5000);
+			 
+		 }
     this.killPacMan();
   }
 
@@ -137,7 +145,7 @@ class Enemy {
       if (map[py][px + 1] != 1) possDeDepl.push({ x: 1, y: 0 });
     }
 
-    if (game.pacGumActive) {
+    if (canvas.pacGumActive) {
       if (player.px > this.px) {
         if (map[py][px - 1] != 1) possDeDepl.push({ x: -1, y: 0 });
       }
@@ -168,14 +176,20 @@ class Enemy {
       if (map[py - 1][px] != 1) possDeDepl.push({ x: 0, y: -1 });
     }
     if (possDeDepl.length > 0) return possDeDepl[getRandomInt(possDeDepl.length)];
+
   }
 
   killPacMan() {
-    if (Math.floor(this.px) == Math.floor(player.px) && Math.floor(this.py) == Math.floor(player.py) && !game.pacGumActive) {
-      map = newMap();
-      clearTimeout(game.gateTimeoutID);
-
+    if (Math.floor(this.px) == Math.floor(player.px) && Math.floor(this.py) == Math.floor(player.py) && !canvas.pacGumActive) {
+			canvas.gameStarted = false;
+			canvas.life--;
+			clearTimeout(canvas.gateTimeoutID);
+			Input.derniereTouche = null
       initGame();
+			closeGate()
+			canvas.gameStarted = false;
+			canvas.gateTimeoutID = setTimeout(openGate, 3000);
+
       cancelAnimationFrame(engine);
     }
   }

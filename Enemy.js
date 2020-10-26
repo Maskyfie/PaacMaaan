@@ -11,8 +11,8 @@ class Enemy {
     this.goingDown = false;
     this.newTile = true;
     this.nextTile = {};
-    this.speed = 0.1;
-		this.speedPacGum = 0.05;
+    this.speed = 0.1 + canvas.level * 0.01;
+    this.speedPacGum = 0.05;
   }
   draw() {
     canvas.ctx.beginPath();
@@ -27,9 +27,9 @@ class Enemy {
   update() {
     let sauvegardeX = this.px;
     let sauvegardeY = this.py;
-		let speed = this.speed
+    let speed = this.speed;
     let offset = 1 - this.speed;
-		if (canvas.pacGumActive) speed = this.speedPacGum;
+    if (canvas.pacGumActive) speed = this.speedPacGum;
 
     this.px = this.px + speed * this.direction.x;
     this.py = this.py + speed * this.direction.y;
@@ -99,28 +99,25 @@ class Enemy {
     }
 
     if (this.px < 0) {
-      this.px = 18;
-      this.py = 9;
+      this.px = 27;
       this.newTile = true;
     }
 
-    if (this.px > 18) {
+    if (this.px > 27) {
       this.px = 0;
-      this.py = 9;
       this.newTile = true;
     }
-		if (canvas.gameWon) {
-			this.speed = this.speed * 1.2;
-		}
-	   if (Math.floor(this.px) == Math.floor(player.px) && Math.floor(this.py) == Math.floor(player.py) && canvas.pacGumActive) {
-			 canvas.score = canvas.score + 100
-			 closeGate(); 
-			 this.px = 9; 
-			 this.py = 9;
-  		 clearTimeout(canvas.gateTimeoutID)
-			 canvas.gateTimeoutID = setTimeout(openGate, 5000);
-			 
-		 }
+    /*    if (canvas.gameWon) {
+      this.speed = this.speed * 1.2;
+    } */
+    if (Math.floor(this.px) == Math.floor(player.px) && Math.floor(this.py) == Math.floor(player.py) && canvas.pacGumActive) {
+      canvas.score = canvas.score + 100;
+      closeGate();
+      this.px = 13;
+      this.py = 13;
+      clearTimeout(canvas.gateTimeoutID);
+      canvas.gateTimeoutID = setTimeout(openGate, 5000);
+    }
     this.killPacMan();
   }
 
@@ -176,19 +173,18 @@ class Enemy {
       if (map[py - 1][px] != 1) possDeDepl.push({ x: 0, y: -1 });
     }
     if (possDeDepl.length > 0) return possDeDepl[getRandomInt(possDeDepl.length)];
-
   }
 
   killPacMan() {
     if (Math.floor(this.px) == Math.floor(player.px) && Math.floor(this.py) == Math.floor(player.py) && !canvas.pacGumActive) {
-			canvas.gameStarted = false;
-			canvas.life--;
-			clearTimeout(canvas.gateTimeoutID);
-			Input.derniereTouche = null
+      canvas.gameStarted = false;
+      canvas.life--;
+      clearTimeout(canvas.gateTimeoutID);
+      Input.derniereTouche = null;
       initGame();
-			closeGate()
-			canvas.gameStarted = false;
-			canvas.gateTimeoutID = setTimeout(openGate, 3000);
+      closeGate();
+      canvas.gameStarted = false;
+      canvas.gateTimeoutID = setTimeout(openGate, 3000);
 
       cancelAnimationFrame(engine);
     }

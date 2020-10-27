@@ -10,7 +10,7 @@ var canvas = {
   gameStarted: false,
   life: 3,
   gameWon: false,
-  level: 1,
+  level: 0,
 };
 const tileSize = canvas.height / map.length;
 var engine;

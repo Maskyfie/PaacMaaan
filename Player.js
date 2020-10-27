@@ -20,7 +20,7 @@ class Player {
       canvas.life = 3;
       canvas.gameStarted = false;
       canvas.points = 0;
-      canvas.level = 1;
+      canvas.level = 0;
       clearTimeout(canvas.gateTimeoutID);
       Input.derniereTouche = null;
       initGame();
